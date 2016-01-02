@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "out": "./museum.js",
+        "sourceMap": true,
+        "watch" : true
+    },
+    "files": [
+        "museum.ts"
+    ]
+}

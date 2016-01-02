@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width" />
+    <meta charset="UTF-8">
+    <title>Museum</title>
+    <style>
+        body {
+            background: #1E1E1E;
+            color: #ccc;
+            font-family: Myriad Pro, Segoe UI, Helvetica, sans-serif;
+            max-width: 700px;
+            padding: 0 20px;
+            margin: 0 auto;
+        }
+        a {
+            color: yellowgreen;
+            text-decoration: none;
+        }
+        h1,h2,h3 {
+            font-weight: normal;
+        }
+        li {
+            padding: 0.2em 0;
+        }
+        p[data-info] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Museum Demo</h1>
+    <p>Museum is a jQuery gallery optimized for fullscreen navigation, inspired by Guardian gallery system.</p>
+    <p>&copy; Jari Pennanen, 2016. MIT License, <a target="_blank" href="https://github.com/ciantic/museum/">Source code at GitHub</a></p>
+    <h2>Basic with info</h2>
+    <ul>
+        <li>
+            <a class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/%27No_Evil%27_Monkey_LACMA_AC1998.249.87.jpg/887px-%27No_Evil%27_Monkey_LACMA_AC1998.249.87.jpg">
+                'No Evil' Monkey LACMA
+                <p data-info>
+                    <strong>Kaigyokusai (Masatsugu) (Japan, 1813-1892)</strong><br>
+                    Japan, mid- to late 19th century<br>
+                    Costumes; Accessories<br>
+                    Wine-colored amber
+                </p>
+            </a>
+        </li>
+        
+        <li>
+            <a class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%27Chalcedony%27_Bottle_LACMA_48.24.45a-b.jpg/673px-%27Chalcedony%27_Bottle_LACMA_48.24.45a-b.jpg">
+                'Chalcedony' Bottle LACMA
+                <p data-info>
+                    <strong>Italy, Venice, 18th century</strong><br>
+                    Furnishings; Accessories<br>
+                    Glass, gilt, metal<br>
+                    10 × 4 × 5 in. (25.4 × 10.16 × 12.7 cm)<br>
+                    William Randolph Hearst Collection (48.24.45a-b)<br>
+                </p>
+            </a>
+        </li>
+        
+        <li>
+            <a class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/%27Rice-Bale%27_Flask_LACMA_M.2000.15.94.jpg/783px-%27Rice-Bale%27_Flask_LACMA_M.2000.15.94.jpg">
+                'Rice-Bale' Flask LACMA
+                <p data-info>
+                    <strong>Korea, Korean, Joseon dynasty (1392-1910), 15th-early 16th century</strong><br>
+                    Tools and Equipment; flasks<br>
+                    Buncheong ware: Wheel-thrown stoneware with slip and pale green glaze<br>
+                    Height: 12 1/2 in. (31.75 cm); Diameter: 7 1/2 in. (19.05 cm)
+                </p>
+            </a>
+        </li>
+        
+        <li>
+            <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/%22Hairy%22_Ainu_LACMA_M.90.186.17.jpg/840px-%22Hairy%22_Ainu_LACMA_M.90.186.17.jpg" class="in-museum">
+                "Hairy" Ainu LACMA
+                <p data-info>
+                    <strong>Japan, 19th century</strong><br>
+                    Costumes; Accessories<br>
+                    Wood<br>
+                    3 1/8 x 1 1/2 x 1 1/2 in. (7.9 x 3.8 x 3.8 cm)<br>
+                    Raymond and Frances Bushell Collection (M.90.186.17)
+                </p>
+            </a>
+        </li>
+    </ul>
+    
+    <h2>Gallery with toc</h2>
+
+    <ul>
+        <li>
+            <a data-gallery="gallery-with-toc" class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/%27No_Evil%27_Monkey_LACMA_AC1998.249.87.jpg/887px-%27No_Evil%27_Monkey_LACMA_AC1998.249.87.jpg" data-toc="First toc line">
+                'No Evil' Monkey LACMA
+            </a>
+        </li>
+        
+        <li>
+            <a data-gallery="gallery-with-toc" class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%27Chalcedony%27_Bottle_LACMA_48.24.45a-b.jpg/673px-%27Chalcedony%27_Bottle_LACMA_48.24.45a-b.jpg" data-toc="Second toc line">
+                'Chalcedony' Bottle LACMA
+            </a>
+        </li>
+        
+        <li>
+            <a data-gallery="gallery-with-toc" class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/%27Rice-Bale%27_Flask_LACMA_M.2000.15.94.jpg/783px-%27Rice-Bale%27_Flask_LACMA_M.2000.15.94.jpg" data-toc="Third toc line">
+                'Rice-Bale' Flask LACMA
+            </a>
+        </li>
+        
+        <li>
+            <a data-gallery="gallery-with-toc" href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/%22Hairy%22_Ainu_LACMA_M.90.186.17.jpg/840px-%22Hairy%22_Ainu_LACMA_M.90.186.17.jpg" class="in-museum" data-toc="Fourth toc line">
+                "Hairy" Ainu LACMA
+            </a>
+        </li>
+    </ul>    
+    
+    <h2>Gallery with toc and info</h2>
+
+    <ul>
+        <li>
+            <a data-gallery="gallery-with-toc-info" class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/%27No_Evil%27_Monkey_LACMA_AC1998.249.87.jpg/887px-%27No_Evil%27_Monkey_LACMA_AC1998.249.87.jpg" data-toc="First toc line">
+                'No Evil' Monkey LACMA
+                <p data-info>
+                    <strong>Kaigyokusai (Masatsugu) (Japan, 1813-1892)</strong><br>
+                    Japan, mid- to late 19th century<br>
+                    Costumes; Accessories<br>
+                    Wine-colored amber
+                </p>
+            </a>
+        </li>
+        
+        <li>
+            <a data-gallery="gallery-with-toc-info" class="in-museum" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%27Chalcedony%27_Bottle_LACMA_48.24.45a-b.jpg/673px-%27Chalcedony%27_Bottle_LACMA_48.24.45a-b.jpg" data-toc="Second toc line">
+                'Chalcedony' Bottle LACMA
+                <p data-info>
+                    <strong>Italy, Venice, 18th century</strong><br>
+                    Furnishings; Accessories<br>
+                    Glass, gilt, metal<br>
+                    10 × 4 × 5 in. (25.4 × 10.16 × 12.7 cm)<br>
+                    William Randolph Hearst Collection (48.24.45a-b)<br>
+                </p>
+            </a>
+        </li>
+    </ul>
+    
+    <h2>Custom elements</h2>
+    <ul>
+        <li>
+            <a class="in-museum" data-gallery="elements" href="#" data-html="<span style='color: red'>Hello</span>">
+                Custom HTML string
+            </a>
+        </li>
+        
+        <li>
+            <a class="in-museum" data-gallery="elements" href="#" data-selector=".custom-element">
+                Custom selector
+            </a>
+        </li>
+    </ul>
+    
+    <!-- usage example -->
+    <link rel="stylesheet" href="museum.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="museum.js"></script>
+    <script>
+        jQuery(".in-museum").museum();
+    </script>
+    
+    <h2>Some content for the scrollbars</h2>
+    <div class="custom-element"><em>Lorem ipsum dolor sit amet</em>, consectetuer adipiscing elit. Duis tincidunt erat in purus ullamcorper ultricies. Duis lacinia aliquet dolor. Maecenas velit enim, eleifend a, tempor eu, mattis in, nisl. Maecenas ut orci. Sed egestas auctor sem. Curabitur vitae pede vel nisl tristique commodo. Phasellus ut nisl. Cras massa. Suspendisse potenti. Vestibulum vitae augue. Mauris mauris sapien, aliquet vitae, tincidunt ac, volutpat eu, ante. Nunc sed quam.</div>
+
+    <p>Etiam sit amet urna. Phasellus consequat augue. Nulla imperdiet cursus urna. Vivamus malesuada sem sed lectus. Aenean ornare dignissim sapien. Suspendisse vulputate tortor et elit. Pellentesque vel eros. Vivamus magna leo, condimentum vitae, convallis id, ultricies non, diam. Nam venenatis, lorem quis pharetra interdum, tellus justo tincidunt ligula, at tempor est mauris eget sapien. Sed elit.
+
+    <p>Pellentesque pharetra quam a purus. Duis feugiat sem. Pellentesque risus magna, accumsan quis, lobortis at, pulvinar id, lorem. Donec hendrerit ligula interdum neque. Sed nisl. Vestibulum dolor. Quisque lacus sem, posuere ac, mattis at, consectetuer eget, mi. In hac habitasse platea dictumst. Sed consequat sodales libero. Ut ut lacus. Integer sed nisi. Nunc consequat, lorem placerat venenatis convallis, pede purus sagittis nunc, a euismod tellus justo gravida augue. Vivamus tincidunt, odio vel rhoncus blandit, turpis sem facilisis velit, ac accumsan tortor nunc vel leo. Praesent leo sapien, dictum in, lobortis ac, consequat sit amet, orci. Praesent mollis sollicitudin est. Mauris vestibulum. Integer iaculis. Etiam mattis commodo turpis.
+    
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis tincidunt erat in purus ullamcorper ultricies. Duis lacinia aliquet dolor. Maecenas velit enim, eleifend a, tempor eu, mattis in, nisl. Maecenas ut orci. Sed egestas auctor sem. Curabitur vitae pede vel nisl tristique commodo. Phasellus ut nisl. Cras massa. Suspendisse potenti. Vestibulum vitae augue. Mauris mauris sapien, aliquet vitae, tincidunt ac, volutpat eu, ante. Nunc sed quam.
+
+    <p>Etiam sit amet urna. Phasellus consequat augue. Nulla imperdiet cursus urna. Vivamus malesuada sem sed lectus. Aenean ornare dignissim sapien. Suspendisse vulputate tortor et elit. Pellentesque vel eros. Vivamus magna leo, condimentum vitae, convallis id, ultricies non, diam. Nam venenatis, lorem quis pharetra interdum, tellus justo tincidunt ligula, at tempor est mauris eget sapien. Sed elit.
+
+    <p>Pellentesque pharetra quam a purus. Duis feugiat sem. Pellentesque risus magna, accumsan quis, lobortis at, pulvinar id, lorem. Donec hendrerit ligula interdum neque. Sed nisl. Vestibulum dolor. Quisque lacus sem, posuere ac, mattis at, consectetuer eget, mi. In hac habitasse platea dictumst. Sed consequat sodales libero. Ut ut lacus. Integer sed nisi. Nunc consequat, lorem placerat venenatis convallis, pede purus sagittis nunc, a euismod tellus justo gravida augue. Vivamus tincidunt, odio vel rhoncus blandit, turpis sem facilisis velit, ac accumsan tortor nunc vel leo. Praesent leo sapien, dictum in, lobortis ac, consequat sit amet, orci. Praesent mollis sollicitudin est. Mauris vestibulum. Integer iaculis. Etiam mattis commodo turpis.
+    
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis tincidunt erat in purus ullamcorper ultricies. Duis lacinia aliquet dolor. Maecenas velit enim, eleifend a, tempor eu, mattis in, nisl. Maecenas ut orci. Sed egestas auctor sem. Curabitur vitae pede vel nisl tristique commodo. Phasellus ut nisl. Cras massa. Suspendisse potenti. Vestibulum vitae augue. Mauris mauris sapien, aliquet vitae, tincidunt ac, volutpat eu, ante. Nunc sed quam.
+
+    <p>Etiam sit amet urna. Phasellus consequat augue. Nulla imperdiet cursus urna. Vivamus malesuada sem sed lectus. Aenean ornare dignissim sapien. Suspendisse vulputate tortor et elit. Pellentesque vel eros. Vivamus magna leo, condimentum vitae, convallis id, ultricies non, diam. Nam venenatis, lorem quis pharetra interdum, tellus justo tincidunt ligula, at tempor est mauris eget sapien. Sed elit.
+
+    <p>Pellentesque pharetra quam a purus. Duis feugiat sem. Pellentesque risus magna, accumsan quis, lobortis at, pulvinar id, lorem. Donec hendrerit ligula interdum neque. Sed nisl. Vestibulum dolor. Quisque lacus sem, posuere ac, mattis at, consectetuer eget, mi. In hac habitasse platea dictumst. Sed consequat sodales libero. Ut ut lacus. Integer sed nisi. Nunc consequat, lorem placerat venenatis convallis, pede purus sagittis nunc, a euismod tellus justo gravida augue. Vivamus tincidunt, odio vel rhoncus blandit, turpis sem facilisis velit, ac accumsan tortor nunc vel leo. Praesent leo sapien, dictum in, lobortis ac, consequat sit amet, orci. Praesent mollis sollicitudin est. Mauris vestibulum. Integer iaculis. Etiam mattis commodo turpis.
+    
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis tincidunt erat in purus ullamcorper ultricies. Duis lacinia aliquet dolor. Maecenas velit enim, eleifend a, tempor eu, mattis in, nisl. Maecenas ut orci. Sed egestas auctor sem. Curabitur vitae pede vel nisl tristique commodo. Phasellus ut nisl. Cras massa. Suspendisse potenti. Vestibulum vitae augue. Mauris mauris sapien, aliquet vitae, tincidunt ac, volutpat eu, ante. Nunc sed quam.
+        
+    <p>Etiam sit amet urna. Phasellus consequat augue. Nulla imperdiet cursus urna. Vivamus malesuada sem sed lectus. Aenean ornare dignissim sapien. Suspendisse vulputate tortor et elit. Pellentesque vel eros. Vivamus magna leo, condimentum vitae, convallis id, ultricies non, diam. Nam venenatis, lorem quis pharetra interdum, tellus justo tincidunt ligula, at tempor est mauris eget sapien. Sed elit.
+
+    <p>Pellentesque pharetra quam a purus. Duis feugiat sem. Pellentesque risus magna, accumsan quis, lobortis at, pulvinar id, lorem. Donec hendrerit ligula interdum neque. Sed nisl. Vestibulum dolor. Quisque lacus sem, posuere ac, mattis at, consectetuer eget, mi. In hac habitasse platea dictumst. Sed consequat sodales libero. Ut ut lacus. Integer sed nisi. Nunc consequat, lorem placerat venenatis convallis, pede purus sagittis nunc, a euismod tellus justo gravida augue. Vivamus tincidunt, odio vel rhoncus blandit, turpis sem facilisis velit, ac accumsan tortor nunc vel leo. Praesent leo sapien, dictum in, lobortis ac, consequat sit amet, orci. Praesent mollis sollicitudin est. Mauris vestibulum. Integer iaculis. Etiam mattis commodo turpis.
+    
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis tincidunt erat in purus ullamcorper ultricies. Duis lacinia aliquet dolor. Maecenas velit enim, eleifend a, tempor eu, mattis in, nisl. Maecenas ut orci. Sed egestas auctor sem. Curabitur vitae pede vel nisl tristique commodo. Phasellus ut nisl. Cras massa. Suspendisse potenti. Vestibulum vitae augue. Mauris mauris sapien, aliquet vitae, tincidunt ac, volutpat eu, ante. Nunc sed quam.
+
+    <p>Etiam sit amet urna. Phasellus consequat augue. Nulla imperdiet cursus urna. Vivamus malesuada sem sed lectus. Aenean ornare dignissim sapien. Suspendisse vulputate tortor et elit. Pellentesque vel eros. Vivamus magna leo, condimentum vitae, convallis id, ultricies non, diam. Nam venenatis, lorem quis pharetra interdum, tellus justo tincidunt ligula, at tempor est mauris eget sapien. Sed elit.
+
+    <p>Pellentesque pharetra quam a purus. Duis feugiat sem. Pellentesque risus magna, accumsan quis, lobortis at, pulvinar id, lorem. Donec hendrerit ligula interdum neque. Sed nisl. Vestibulum dolor. Quisque lacus sem, posuere ac, mattis at, consectetuer eget, mi. In hac habitasse platea dictumst. Sed consequat sodales libero. Ut ut lacus. Integer sed nisi. Nunc consequat, lorem placerat venenatis convallis, pede purus sagittis nunc, a euismod tellus justo gravida augue. Vivamus tincidunt, odio vel rhoncus blandit, turpis sem facilisis velit, ac accumsan tortor nunc vel leo. Praesent leo sapien, dictum in, lobortis ac, consequat sit amet, orci. Praesent mollis sollicitudin est. Mauris vestibulum. Integer iaculis. Etiam mattis commodo turpis.
+</body>
+</html>

@@ -1,0 +1,326 @@
+@museum-defines: `(function () {
+    var less = process.mainModule.children[2].exports;
+    
+    less.functions.functionRegistry.add("museum-replace", function(str, rep, context) {
+        // Looks like a data uri result
+        if (str instanceof less.tree.URL) {
+            // Replace all "name='something'" ...
+            str.value.value = str.value.value.replace(/([a-z]+)%3D(["'])([^\s]+?)['"]/g, function (original, name, quote, value) {
+                if (name in rep.value) {
+                    return name + "%3D" + quote + encodeURIComponent(rep.value[name]) + quote;
+                }                
+                return original;
+            });
+        } 
+        return str;
+    });
+})()`;
+.no-select(@user-select: none) {
+  -webkit-touch-callout: @user-select;
+  -webkit-user-select: @user-select;
+  -khtml-user-select: @user-select;
+  -moz-user-select: @user-select;
+  -ms-user-select: @user-select;
+  user-select: @user-select;
+}
+.border-box() {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.transition (@transition) {
+	-webkit-transition: @transition;  
+	-moz-transition:    @transition;
+	-ms-transition:     @transition; 
+	-o-transition:      @transition;  
+}
+.transform(@string){
+	-webkit-transform: @string;
+	-moz-transform: 	 @string;
+	-ms-transform: 		 @string;
+	-o-transform: 		 @string;
+}
+.transition-transform (@transition) {
+	-webkit-transition: -webkit-transform @transition;  
+	-moz-transition: -moz-transform @transition;
+	-ms-transition: -ms-transform @transition; 
+	-o-transition: -o-transform @transition;  
+	transition: @transition;
+}
+@museum-anim-speed: 0.18s;
+@museum-page-color: #9E9E9E;
+@museum-page-spacing: 15px;
+@museum-overlay-bg: #1E1E1E;
+
+@museum-nav-width: 74px;
+@museum-nav-padding: 10px;
+@museum-nav-spacing: 15px;
+@museum-nav-close-spacing: 40px;
+@museum-nav-bg: #333333;
+
+@museum-toc-bg: #252526;
+@museum-toc-border: darken(@museum-toc-bg, 5%);
+@museum-toc-width: 250px;
+@museum-toc-padding: 1.2em;
+
+@museum-toc-row-padding: 0.35em 0;
+@museum-toc-row-color: #aaa;
+@museum-toc-row-color-hover: #bbb;
+@museum-toc-row-color-active: #fff;
+
+@museum-info-bg: #252526;
+@museum-info-color: #fff;
+@museum-info-padding: 1.35em; 
+@museum-info-border: darken(@museum-info-bg, 5%);
+@museum-info-height: 25%;
+
+@museum-btn-bg: #4F4F4F;
+@museum-btn-bg-hover: lighten(@museum-btn-bg, 7%);
+@museum-btn-bg-toggled: darken(@museum-btn-bg, 18%);
+@museum-btn-glyph-size: 26;
+@museum-btn-glyph-color: #fff;
+@museum-btn-close-glyph: museum-replace(data-uri("icon-close.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-next-glyph: museum-replace(data-uri("icon-next.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-prev-glyph: museum-replace(data-uri("icon-prev.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-toc-glyph: museum-replace(data-uri("icon-toc.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-info-glyph: museum-replace(data-uri("icon-info.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+
+body.museum-overlay-shown {
+    overflow: hidden;
+}
+
+museum-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: @museum-overlay-bg;
+    
+    &.shown {
+        display: block;
+    }
+    
+    &.hidden {
+        
+    }
+}
+
+museum-gallery {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: @museum-nav-width;
+    overflow: hidden;
+    .transition(~"right @{museum-anim-speed}, bottom @{museum-anim-speed}");
+    .toc-shown & {
+        right: (@museum-nav-width + @museum-toc-width);
+    }
+    .info-shown & {
+        bottom: @museum-info-height;
+    }
+}
+
+museum-gallery-item {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    &.shown {
+        display: block;
+    }
+    
+    > .img {
+        .no-select();
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+}
+museum-info {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: @museum-nav-width;
+    left: 0;
+    height: 0;
+    background: @museum-info-bg;
+    border-top: 1px solid @museum-info-border;
+    .transform(translateY(100%));
+    .transition-transform(~"@{museum-anim-speed}, right @{museum-anim-speed}");
+    
+    .info-shown & {
+        height: @museum-info-height;
+        .transform(translateY(0));
+    }
+    
+    .toc-shown & {
+        right: (@museum-nav-width + @museum-toc-width);
+    }
+}
+museum-info-content {
+    display: block;
+    padding: @museum-info-padding;
+    color: @museum-info-color;
+}
+museum-toc {
+    display: block;
+    .border-box();
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    padding: @museum-toc-padding;
+    right: @museum-nav-width;
+    width: @museum-toc-width;
+    background: @museum-toc-bg;
+    border-left: 1px solid @museum-toc-border;   
+    height: 0;
+    opacity: 0;
+    .transition-transform(~"@{museum-anim-speed}, opacity @{museum-anim-speed}");
+    .transform(translateX(100%));
+    
+    .toc-shown & {
+        height: auto;
+        opacity: 1;
+        .transform(translateX(0));
+    } 
+}
+.museum-toc-row {
+    .transition(color @museum-anim-speed);
+    padding: @museum-toc-row-padding;
+    color: @museum-toc-row-color;
+    display: block;
+    
+    &:hover {
+        color: @museum-toc-row-color-hover;
+    }
+    
+    &.active {
+        color: @museum-toc-row-color-active;
+    }
+}
+museum-nav {
+    display: block;
+    z-index: 2;
+    background: @museum-nav-bg;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    width: (@museum-nav-width - @museum-nav-padding * 2);
+    padding: @museum-nav-padding;
+    
+    &:focus {
+        outline: 0;
+    }
+}
+museum-page {
+    display: block;
+    text-align: center;
+    color: @museum-page-color;
+    margin: 0 0 @museum-page-spacing 0;
+}
+.museum-btn {
+    display: block;
+    position: relative;
+    padding: 0;
+    border: 0;
+    margin: 0 0 @museum-nav-spacing 0;
+    padding-top: 100%;
+    background: @museum-btn-bg;
+    width: 100%;
+    border-radius: 50%;
+    .no-select();
+    .transition(background @museum-anim-speed);
+    
+    &:after {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        display: block;
+        text-align: center;
+        content: "";
+        background: center center no-repeat;
+    }
+    
+    &:hover {
+        background: @museum-btn-bg-hover;
+    }
+    
+    &:active {
+        .museum-btn-toggled();
+    }
+}
+
+.museum-btn-disabled() {
+    opacity: 0.6;
+    &:after {   
+        opacity: 0.7;
+    }
+    &:hover {
+        background: @museum-btn-bg;
+    }
+}
+
+.museum-btn-toggled() {
+    background: @museum-btn-bg-toggled;
+    
+    &:hover {
+        background: @museum-btn-bg-toggled;
+    }
+}
+.museum-btn-close {
+    margin-bottom: @museum-nav-close-spacing;
+}
+.museum-btn-close:after {
+    background-image: @museum-btn-close-glyph;
+}
+.museum-btn-next:after {
+    background-image: @museum-btn-next-glyph;
+}
+.museum-btn-prev:after {
+    background-image: @museum-btn-prev-glyph;
+}
+.museum-btn-toc:after {
+    background-image: @museum-btn-toc-glyph;
+}
+.museum-btn-info:after {
+    background-image: @museum-btn-info-glyph;
+}
+
+.museum-btn-toc {
+    display: none;
+    .has-toc & {
+        display: block;
+    }
+}
+
+.museum-btn-info {
+    display: none;
+    .has-info & {
+        display: block;
+    }
+}
+
+.on-last-item .museum-btn-next,
+.on-first-item .museum-btn-prev {
+    .museum-btn-disabled();
+}
+.toc-shown .museum-btn-toc {
+    .museum-btn-toggled();
+}
+.info-shown .museum-btn-info {
+    .museum-btn-toggled();
+}
