@@ -1,11 +1,15 @@
 /// <reference path="./typings/tsd.d.ts" />
-
 /**
  * Museum jQuery plugin
  * Jari Pennanen, 2016
  * MIT License
  * https://github.com/ciantic/museum/
  */
+
+interface JQuery {
+    swipe: any
+}
+
 (function ($: JQueryStatic) {
     
     function cyclic(i: number, count: number) {
@@ -24,7 +28,6 @@
     
     var defaultTemplate = `
         <museum-overlay>
-            <museum-header></museum-header>
             <museum-gallery>
                 <museum-gallery-item class="uninitialized"></museum-gallery-item>
             </museum-gallery>
@@ -61,22 +64,29 @@
     }
     
     class Museum {
-        id : string
-        classes : string
-        items : MuseumItem[]
-        circular : boolean
-        template : string
-        useInfo : boolean
-        useToc : boolean
+        id : string;
         
-        el : HTMLElement
-        galleryEl : HTMLElement
-        galleryItemTemplateEl : HTMLElement
-        tocEl : HTMLElement
-        tocRowTemplateEl : HTMLElement
-        infoContentEl : HTMLElement
-        pageEl : HTMLElement
-        current : number = 0
+        private classes : string;
+        private items : MuseumItem[];
+        private circular : boolean;
+        private template : string;
+        private useInfo : boolean;
+        private useToc : boolean;
+        
+        private el : HTMLElement;
+        private galleryEl : HTMLElement;
+        private galleryItemTemplateEl : HTMLElement;
+        private tocEl : HTMLElement;
+        private tocRowTemplateEl : HTMLElement;
+        private infoContentEl : HTMLElement;
+        private pageEl : HTMLElement;
+        private currentEl : HTMLElement;
+        
+        private current : number = 0;
+        private wasFocused: JQuery;
+        
+        onShowItem: JQueryCallback = $.Callbacks();
+        onHide: JQueryCallback = $.Callbacks();
         
         constructor({
             id = "", 
@@ -96,8 +106,6 @@
             this.useToc = useToc;
         }
         
-        private wasFocused: JQuery;
-        
         private keyboardEventHandler = $.proxy(this.keyboardEvent, this);
         private keyboardEvent(e: JQueryKeyEventObject) {
             if (e.keyCode == 39) {
@@ -112,6 +120,9 @@
         private selectToc(e: JQueryKeyEventObject) {
             var i = $(e.currentTarget).data('i');
             this.showItem(i);
+            if ($(window).width() < 550) {
+                this.toc();
+            }
             e.preventDefault();
         }
         
@@ -132,7 +143,6 @@
             
             galleryItemEl.removeClass("uninitialized");
             galleryItemEl.append(item.el);
-            $(this).triggerHandler("init", [i]);
             return this;
         }
         
@@ -163,6 +173,8 @@
                 }
             });
             
+            this.currentEl = $(this.galleryEl).children().eq(this.current).get(0);
+            
             $(this.el).toggleClass('has-toc', self.useToc && hasToc);
             $(this.el).toggleClass('has-info', self.useInfo && hasInfo);
             $(this.el).on("click", "a.museum-toc-row", $.proxy(this.selectToc, this));
@@ -171,27 +183,32 @@
             $(this.el).on("click", ".museum-btn-toc", handle(this.toc, this));
             $(this.el).on("click", ".museum-btn-close", handle(this.hide, this));
             $(this.el).on("click", ".museum-btn-info", handle(this.info, this));
-            $(this).triggerHandler("render");
+            if ($.fn.swipe) {
+                $(this.el).swipe({
+                    swipeLeft : () => {
+                        self.next()
+                    },
+                    swipeRight : () => {
+                        self.prev();
+                    }
+                });
+            }
         }
         
         info() {
             $(this.el).toggleClass("info-shown");
-            $(this).triggerHandler("info");
         }
         
         toc() {
             $(this.el).toggleClass("toc-shown");
-            $(this).triggerHandler("toc");
         }
         
         next() {
             this.showItem(this.current + 1);
-            $(this).triggerHandler("next");
         }
         
         prev() {
             this.showItem(this.current - 1);
-            $(this).triggerHandler("prev");
         }
         
         show(n: number = 0) {
@@ -201,7 +218,6 @@
             $("body").addClass('museum-overlay-shown');
             $(this.el).removeClass('hidden').addClass('shown');
             $(window).bind("keydown", this.keyboardEventHandler);
-            $(this).triggerHandler("show", [n]);
             this.showItem(n);
             
             // Set the focus
@@ -236,9 +252,9 @@
             if (!item) {
                 return this;
             }
-            this.current = n;   
             this.init(n);
-            $(this.galleryEl).children().removeClass('shown').eq(n).addClass('shown');
+            this.current = n;   
+            this.currentEl = $(this.galleryEl).children().removeClass('shown').eq(n).addClass('shown').get(0);
             $(this.tocEl).children().removeClass('active').filter("[data-i="+n+"]").addClass('active');
             $(this.infoContentEl).html(item.info);
             $(this.pageEl).text(item.page || ((this.current + 1) + " / " + this.items.length));
@@ -247,7 +263,9 @@
             setTimeout(function() {
                 self.init(n + 1);      
             }, 300);
-            $(this).triggerHandler("showItem", [n]);
+            
+            this.onShowItem.fire(n);
+            
             return this;
         }
         
@@ -255,24 +273,33 @@
             var self = this;
             $("body").removeClass('museum-overlay-shown');
             $(this.el).addClass('hidden').removeClass('shown');
+            $(window).unbind("keydown", this.keyboardEventHandler);
+            $(this.wasFocused).focus();
             setTimeout(function() {
+                if ($.fn.swipe) {
+                    $(self.el).swipe("destroy");
+                }
+                $(self.el).unbind("click");
                 $(self.el).remove();
                 self.el = null;    
-            }, 0)
-            $(window).unbind("keydown", this.keyboardEventHandler);
-            $(this).triggerHandler("hide");
-            $(this.wasFocused).focus();
+                self.galleryEl = null;
+                self.galleryItemTemplateEl = null;
+                self.tocEl = null;
+                self.tocRowTemplateEl = null;
+                self.infoContentEl = null;
+                self.pageEl = null;
+                self.currentEl 
+            }, 0);
+            this.onHide.fire();
             return this;
         }
         
         destroy() {
             this.hide();
-            $(this).triggerHandler("destroy");
         }
         
         add(item: MuseumItem) {
             this.items.push(item);
-            $(this).triggerHandler("add", [item]);
             return this.items.length - 1;
         }
         
@@ -305,7 +332,6 @@
                 page : page
             };
             
-            $(this).triggerHandler("addFromEl", [el, item]);
             return this.add(item);
         }
     }
@@ -353,14 +379,23 @@
                 var self = this,
                     m = new Museum(opts);
                     
-                $(m).on("showItem", function (e, n) {
+                m.onShowItem.add(function (n: number) {
                     self.navHash(m, n);
-                }).on("hide", function () {
+                });
+                
+                m.onHide.add(function () {
                     self.emptyHash();
                 });
                 
                 this.museums[opts.id] = m;
                 return m;
+            }
+        }
+        
+        destroy(id: string) {
+            if (this.museums[id]) {
+                this.museums[id].destroy();
+                delete this.museums[id];
             }
         }
     }

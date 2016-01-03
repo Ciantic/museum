@@ -44,8 +44,51 @@
 	-moz-transition: -moz-transform @transition;
 	-ms-transition: -ms-transform @transition; 
 	-o-transition: -o-transform @transition;  
-	transition: @transition;
+	transition: transform @transition;
 }
+
+.museum-scrollbar(@width: 5px) {
+    &::scrollbar { width: @width; }
+    &::scrollbar-button {
+        width: 0px;
+        height: 0px;
+    }
+    &::scrollbar-track {
+        background: @museum-scrollbar-bg;
+        border: 0; 
+        border-radius: 0;
+    }
+    &::scrollbar-thumb {
+        background: @museum-scrollbar-thumb;
+        border-radius: 0;
+    }
+    &::scrollbar-thumb:hover {
+        background: @museum-scrollbar-thumb;
+    }
+    
+    &::-moz-scrollbar { width: @width; }
+    &::-webkit-scrollbar { width: @width; }
+    &::-webkit-scrollbar-button {
+        width: 0px;
+        height: 0px;
+    }
+    &::-webkit-scrollbar-track {
+        background: @museum-scrollbar-bg;
+        border: 0; 
+        border-radius: 0;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: @museum-scrollbar-thumb;
+        border-radius: 0;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: @museum-scrollbar-thumb;
+    }
+}
+
+@museum-scrollbar-bg: #1E1E1E;
+@museum-scrollbar-thumb: #9E9E9E;
+
 @museum-anim-speed: 0.18s;
 @museum-page-color: #9E9E9E;
 @museum-page-spacing: 15px;
@@ -58,7 +101,6 @@
 @museum-nav-bg: #333333;
 
 @museum-toc-bg: #252526;
-@museum-toc-border: darken(@museum-toc-bg, 5%);
 @museum-toc-width: 250px;
 @museum-toc-padding: 1.2em;
 
@@ -67,10 +109,9 @@
 @museum-toc-row-color-hover: #bbb;
 @museum-toc-row-color-active: #fff;
 
-@museum-info-bg: #252526;
+@museum-info-bg: darken(#252526, 1%);
 @museum-info-color: #fff;
 @museum-info-padding: 1.35em; 
-@museum-info-border: darken(@museum-info-bg, 5%);
 @museum-info-height: 25%;
 
 @museum-btn-bg: #4F4F4F;
@@ -130,6 +171,7 @@ museum-gallery-item {
     bottom: 0;
     left: 0;
     right: 0;
+    .transition-transform(~"0.1s");
     
     &.shown {
         display: block;
@@ -154,14 +196,16 @@ museum-info {
     right: @museum-nav-width;
     left: 0;
     height: 0;
+    opacity: 0;
     background: @museum-info-bg;
-    border-top: 1px solid @museum-info-border;
     .transform(translateY(100%));
-    .transition-transform(~"@{museum-anim-speed}, right @{museum-anim-speed}");
+    .transition-transform(~"@{museum-anim-speed}, right @{museum-anim-speed}, opacity @{museum-anim-speed}");
     
     .info-shown & {
+        opacity: 1;
         height: @museum-info-height;
         .transform(translateY(0));
+        overflow: auto;
     }
     
     .toc-shown & {
@@ -182,17 +226,17 @@ museum-toc {
     padding: @museum-toc-padding;
     right: @museum-nav-width;
     width: @museum-toc-width;
-    background: @museum-toc-bg;
-    border-left: 1px solid @museum-toc-border;   
+    background: @museum-toc-bg;   
     height: 0;
     opacity: 0;
     .transition-transform(~"@{museum-anim-speed}, opacity @{museum-anim-speed}");
     .transform(translateX(100%));
     
     .toc-shown & {
-        height: auto;
+        height: 100%;
         opacity: 1;
         .transform(translateX(0));
+        overflow: auto;
     } 
 }
 .museum-toc-row {
@@ -323,4 +367,62 @@ museum-page {
 }
 .info-shown .museum-btn-info {
     .museum-btn-toggled();
+}
+
+museum-gallery,
+museum-toc,
+museum-info {
+    .museum-scrollbar();
+}
+
+@media(max-height: 750px) {
+    
+    @museum-info-height: 33%;
+    museum-gallery {
+        .info-shown & {
+            bottom: @museum-info-height;
+        }
+    }
+    museum-info {
+        .info-shown & {
+            height: @museum-info-height;
+        }
+    }
+}
+@media(max-height: 550px) {
+    
+    @museum-info-height: 70%;
+    museum-gallery {
+        .info-shown & {
+            bottom: @museum-info-height;
+        }
+    }
+    museum-info {
+        .info-shown & {
+            height: @museum-info-height;
+        }
+    }
+}
+
+
+@media(max-width: 550px) {
+    @museum-toc-width: auto;
+    museum-toc {
+        width: @museum-toc-width;
+        .toc-shown & {
+            left: 0;
+        }
+    }
+    
+    museum-info {
+        .toc-shown & {
+            right: @museum-nav-width;
+        }
+    }
+    
+    museum-gallery {   
+        .toc-shown & {
+            right: @museum-nav-width;
+        }
+    }
 }
