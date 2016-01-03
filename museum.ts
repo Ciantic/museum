@@ -10,6 +10,14 @@ interface JQuery {
     swipe: any
 }
 
+// JQueryCallback is not working here because it's not generic
+interface JQueryCallbackGeneric<T extends Function> {
+    add(callback: T): JQueryCallbackGeneric<T>;
+    remove(callback: T): JQueryCallbackGeneric<T>
+    empty(): JQueryCallbackGeneric<T>
+    fire: T
+}
+
 (function ($: JQueryStatic) {
     
     function cyclic(i: number, count: number) {
@@ -24,7 +32,7 @@ interface JQuery {
             fn.call(context);
             e.preventDefault();
         }
-    } 
+    }
     
     var defaultTemplate = `
         <museum-overlay>
@@ -85,8 +93,9 @@ interface JQuery {
         private current : number = 0;
         private wasFocused: JQuery;
         
-        onShowItem: JQueryCallback = $.Callbacks();
-        onHide: JQueryCallback = $.Callbacks();
+        onShowItem: JQueryCallbackGeneric<(n: number, item: MuseumItem) => void> = $.Callbacks();
+        onShow: JQueryCallbackGeneric<() => void> = $.Callbacks();
+        onHide: JQueryCallbackGeneric<() => void> = $.Callbacks();
         
         constructor({
             id = "", 
@@ -227,6 +236,7 @@ interface JQuery {
                 focusable.first().focus();
             });
             focusable.first().parent().focus();
+            this.onShow.fire();
         }
         
         private showItem(n: number = 0) {
@@ -264,7 +274,7 @@ interface JQuery {
                 self.init(n + 1);      
             }, 300);
             
-            this.onShowItem.fire(n);
+            this.onShowItem.fire(n, item);
             
             return this;
         }
@@ -379,7 +389,7 @@ interface JQuery {
                 var self = this,
                     m = new Museum(opts);
                     
-                m.onShowItem.add(function (n: number) {
+                m.onShowItem.add(function (n) {
                     self.navHash(m, n);
                 });
                 

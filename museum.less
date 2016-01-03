@@ -1,20 +1,5 @@
-@museum-defines: `(function () {
-    var less = process.mainModule.children[2].exports;
-    
-    less.functions.functionRegistry.add("museum-replace", function(str, rep, context) {
-        // Looks like a data uri result
-        if (str instanceof less.tree.URL) {
-            // Replace all "name='something'" ...
-            str.value.value = str.value.value.replace(/([a-z]+)%3D(["'])([^\s]+?)['"]/g, function (original, name, quote, value) {
-                if (name in rep.value) {
-                    return name + "%3D" + quote + encodeURIComponent(rep.value[name]) + quote;
-                }                
-                return original;
-            });
-        } 
-        return str;
-    });
-})()`;
+@plugin "less-uri-replace.js";
+
 .no-select(@user-select: none) {
   -webkit-touch-callout: @user-select;
   -webkit-user-select: @user-select;
@@ -119,11 +104,11 @@
 @museum-btn-bg-toggled: darken(@museum-btn-bg, 18%);
 @museum-btn-glyph-size: 26;
 @museum-btn-glyph-color: #fff;
-@museum-btn-close-glyph: museum-replace(data-uri("icon-close.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-next-glyph: museum-replace(data-uri("icon-next.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-prev-glyph: museum-replace(data-uri("icon-prev.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-toc-glyph: museum-replace(data-uri("icon-toc.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-info-glyph: museum-replace(data-uri("icon-info.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-close-glyph: uri-replace(data-uri("icon-close.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-next-glyph: uri-replace(data-uri("icon-next.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-prev-glyph: uri-replace(data-uri("icon-prev.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-toc-glyph: uri-replace(data-uri("icon-toc.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+@museum-btn-info-glyph: uri-replace(data-uri("icon-info.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
 
 body.museum-overlay-shown {
     overflow: hidden;
