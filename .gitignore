@@ -2,3 +2,4 @@
 museum.js
 *.map
 typings
+.vscode
