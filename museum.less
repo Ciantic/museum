@@ -1,6 +1,12 @@
-@plugin "less-uri-replace.js";
+.museum-icon(@src, @fill, @width, @height, @old-fill, @old-width, @old-height) {
+    @a: data-uri('image/svg+xml;charset=UTF-8', "@{src}");
+    @b: replace("@{a}", escape('@{old-fill}'), escape('@{fill}'));
+    @c: replace("@{b}", escape('width="@{@old-width}"'), escape('width="@{width}"'));
+    @d: replace("@{c}", escape('height="@{old-height}"'), escape('height="@{height}"'));
+    background-image: e(@d);
+}
 
-.no-select(@user-select: none) {
+.museum-no-select(@user-select: none) {
   -webkit-touch-callout: @user-select;
   -webkit-user-select: @user-select;
   -khtml-user-select: @user-select;
@@ -8,23 +14,23 @@
   -ms-user-select: @user-select;
   user-select: @user-select;
 }
-.border-box() {
+.museum-border-box() {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-.transition (@transition) {
+.museum-transition (@transition) {
 	-webkit-transition: @transition;  
 	-moz-transition:    @transition;
 	-ms-transition:     @transition; 
 	-o-transition:      @transition;  
 }
-.transform(@string){
+.museum-transform(@string){
 	-webkit-transform: @string;
 	-moz-transform: 	 @string;
 	-ms-transform: 		 @string;
 	-o-transform: 		 @string;
 }
-.transition-transform (@transition) {
+.museum-transition-transform (@transition) {
 	-webkit-transition: -webkit-transform @transition;  
 	-moz-transition: -moz-transform @transition;
 	-ms-transition: -ms-transform @transition; 
@@ -104,11 +110,11 @@
 @museum-btn-bg-toggled: darken(@museum-btn-bg, 18%);
 @museum-btn-glyph-size: 26;
 @museum-btn-glyph-color: #fff;
-@museum-btn-close-glyph: uri-replace(data-uri("icon-close.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-next-glyph: uri-replace(data-uri("icon-next.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-prev-glyph: uri-replace(data-uri("icon-prev.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-toc-glyph: uri-replace(data-uri("icon-toc.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
-@museum-btn-info-glyph: uri-replace(data-uri("icon-info.svg"), `{ width: @{museum-btn-glyph-size}, height: @{museum-btn-glyph-size}, fill: "@{museum-btn-glyph-color}" }`);
+.museum-btn-close-glyph() { .museum-icon("icon-close.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-next-glyph() { .museum-icon("icon-next.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-prev-glyph() { .museum-icon("icon-prev.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-toc-glyph() { .museum-icon("icon-toc.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-info-glyph() { .museum-icon("icon-info.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
 
 body.museum-overlay-shown {
     overflow: hidden;
@@ -140,7 +146,7 @@ museum-gallery {
     left: 0;
     right: @museum-nav-width;
     overflow: hidden;
-    .transition(~"right @{museum-anim-speed}, bottom @{museum-anim-speed}");
+    .museum-transition(~"right @{museum-anim-speed}, bottom @{museum-anim-speed}");
     .toc-shown & {
         right: (@museum-nav-width + @museum-toc-width);
     }
@@ -156,14 +162,14 @@ museum-gallery-item {
     bottom: 0;
     left: 0;
     right: 0;
-    .transition-transform(~"0.1s");
+    .museum-transition-transform(~"0.1s");
     
     &.shown {
         display: block;
     }
     
     > .img {
-        .no-select();
+        .museum-no-select();
         position: absolute;
         top: 0;
         bottom: 0;
@@ -183,13 +189,13 @@ museum-info {
     height: 0;
     opacity: 0;
     background: @museum-info-bg;
-    .transform(translateY(100%));
-    .transition-transform(~"@{museum-anim-speed}, right @{museum-anim-speed}, opacity @{museum-anim-speed}");
+    .museum-transform(translateY(100%));
+    .museum-transition-transform(~"@{museum-anim-speed}, right @{museum-anim-speed}, opacity @{museum-anim-speed}");
     
     .info-shown & {
         opacity: 1;
         height: @museum-info-height;
-        .transform(translateY(0));
+        .museum-transform(translateY(0));
         overflow: auto;
     }
     
@@ -204,7 +210,7 @@ museum-info-content {
 }
 museum-toc {
     display: block;
-    .border-box();
+    .museum-border-box();
     position: absolute;
     top: 0;
     bottom: 0;
@@ -214,18 +220,18 @@ museum-toc {
     background: @museum-toc-bg;   
     height: 0;
     opacity: 0;
-    .transition-transform(~"@{museum-anim-speed}, opacity @{museum-anim-speed}");
-    .transform(translateX(100%));
+    .museum-transition-transform(~"@{museum-anim-speed}, opacity @{museum-anim-speed}");
+    .museum-transform(translateX(100%));
     
     .toc-shown & {
         height: 100%;
         opacity: 1;
-        .transform(translateX(0));
+        .museum-transform(translateX(0));
         overflow: auto;
     } 
 }
 .museum-toc-row {
-    .transition(color @museum-anim-speed);
+    .museum-transition(color @museum-anim-speed);
     padding: @museum-toc-row-padding;
     color: @museum-toc-row-color;
     display: block;
@@ -269,8 +275,8 @@ museum-page {
     background: @museum-btn-bg;
     width: 100%;
     border-radius: 50%;
-    .no-select();
-    .transition(background @museum-anim-speed);
+    .museum-no-select();
+    .museum-transition(background @museum-anim-speed);
     
     &:after {
         top: 0;
@@ -314,19 +320,19 @@ museum-page {
     margin-bottom: @museum-nav-close-spacing;
 }
 .museum-btn-close:after {
-    background-image: @museum-btn-close-glyph;
+    .museum-btn-close-glyph();
 }
 .museum-btn-next:after {
-    background-image: @museum-btn-next-glyph;
+    .museum-btn-next-glyph();
 }
 .museum-btn-prev:after {
-    background-image: @museum-btn-prev-glyph;
+    .museum-btn-prev-glyph();
 }
 .museum-btn-toc:after {
-    background-image: @museum-btn-toc-glyph;
+    .museum-btn-toc-glyph();
 }
 .museum-btn-info:after {
-    background-image: @museum-btn-info-glyph;
+    .museum-btn-info-glyph();
 }
 
 .museum-btn-toc {
