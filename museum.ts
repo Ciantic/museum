@@ -418,8 +418,12 @@ interface JQueryCallbackGeneric<T extends Function> {
                 museum = museumManager.getOrCreate(opts || {
                     id : id,
                     classes : id ? ("gallery-" + id) : ""
-                }),
-                n = museum.addFromEl(this);
+                });
+                
+            var n = 0;
+            if (!opts || (opts && opts.items.length == 0)) {
+                n = museum.addFromEl(this)
+            }
             
             $(this).click(function (e) {
                 museum.show(n);
