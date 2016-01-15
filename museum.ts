@@ -135,6 +135,19 @@ interface JQueryCallbackGeneric<T extends Function> {
             e.preventDefault();
         }
         
+        private uninit(i: number) {
+            var self = this;
+            if (i >= this.items.length || i < 0) {
+                return this;
+            }
+            var galleryItemEl = $(this.galleryEl).children().eq(i);
+            if (galleryItemEl.is('.uninitialized')) {
+                return this;
+            }
+            
+            galleryItemEl.replaceWith($(self.galleryItemTemplateEl).clone());
+        }
+        
         private init(i: number = 0) {
             if (i >= this.items.length || i < 0) {
                 return this;
@@ -262,8 +275,11 @@ interface JQueryCallbackGeneric<T extends Function> {
             if (!item) {
                 return this;
             }
+            if (this.current != n) {
+                this.uninit(this.current);
+            }
             this.init(n);
-            this.current = n;   
+            this.current = n;
             this.currentEl = $(this.galleryEl).children().removeClass('shown').eq(n).addClass('shown').get(0);
             $(this.tocEl).children().removeClass('active').filter("[data-i="+n+"]").addClass('active');
             $(this.infoContentEl).html(item.info);

@@ -106,6 +106,7 @@
 @museum-info-height: 25%;
 
 @museum-btn-bg: #4F4F4F;
+@museum-btn-size: (@museum-nav-width - @museum-nav-padding*2);
 @museum-btn-bg-hover: lighten(@museum-btn-bg, 7%);
 @museum-btn-bg-toggled: darken(@museum-btn-bg, 18%);
 @museum-btn-glyph-size: 26;
@@ -209,8 +210,8 @@ museum-info-content {
     color: @museum-info-color;
 }
 museum-toc {
-    display: block;
     .museum-border-box();
+    display: block;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -218,13 +219,15 @@ museum-toc {
     right: @museum-nav-width;
     width: @museum-toc-width;
     background: @museum-toc-bg;   
-    height: 0;
+    //height: 0;
     opacity: 0;
-    .museum-transition-transform(~"@{museum-anim-speed}, opacity @{museum-anim-speed}");
+    visibility: hidden;
+    .museum-transition-transform(~"@{museum-anim-speed}, opacity @{museum-anim-speed}, visibility @{museum-anim-speed}");
     .museum-transform(translateX(100%));
     
     .toc-shown & {
-        height: 100%;
+        visibility: visible;
+        //height: 100%;
         opacity: 1;
         .museum-transform(translateX(0));
         overflow: auto;
@@ -245,6 +248,7 @@ museum-toc .museum-toc-row {
     }
 }
 museum-nav {
+    .museum-border-box();
     display: block;
     z-index: 2;
     background: @museum-nav-bg;
@@ -252,7 +256,7 @@ museum-nav {
     bottom: 0;
     top: 0;
     right: 0;
-    width: (@museum-nav-width - @museum-nav-padding * 2);
+    width: @museum-nav-width;
     padding: @museum-nav-padding;
     
     &:focus {
@@ -260,6 +264,7 @@ museum-nav {
     }
 }
 museum-page {
+    .museum-border-box();
     display: block;
     text-align: center;
     color: @museum-page-color;
@@ -271,9 +276,9 @@ museum-page {
     padding: 0;
     border: 0;
     margin: 0 0 @museum-nav-spacing 0;
-    padding-top: 100%;
     background: @museum-btn-bg;
-    width: 100%;
+    width: @museum-btn-size;
+    height: @museum-btn-size;
     border-radius: 50%;
     .museum-no-select();
     .museum-transition(background @museum-anim-speed);
@@ -400,9 +405,7 @@ museum-info {
     @museum-toc-width: auto;
     museum-toc {
         width: @museum-toc-width;
-        .toc-shown & {
-            left: 0;
-        }
+        left: 0;
     }
     
     museum-info {
@@ -415,5 +418,85 @@ museum-info {
         .toc-shown & {
             right: @museum-nav-width;
         }
+    }
+}
+
+@media(max-width: 550px) and (orientation: portrait) {
+    // Override @media(max-height: 550px) {
+    @museum-info-height: 70%;
+    museum-gallery {
+        .info-shown & {
+            bottom: @museum-info-height;
+        }
+    }
+    museum-info {
+        .info-shown & {
+            height: @museum-info-height;
+        }
+    }
+    
+    // Override @media(max-width: 550px) {
+    @museum-toc-width: auto;
+    museum-toc {
+        width: @museum-toc-width;
+        right: 0;
+        bottom: @museum-nav-width;
+        .toc-shown & {
+            left: 0;
+        }
+    }
+    
+    museum-info {
+        .toc-shown & {
+            right: 0;
+            bottom: @museum-nav-width;
+        }
+    }
+    
+    museum-gallery {   
+        .toc-shown & {
+            right: 0;
+            bottom: @museum-nav-width;
+        }
+    }
+    
+    // Default stuff for portrait
+    @museum-nav-spacing: 10px;
+    museum-nav {
+        left: 0;
+        right: 0;
+        top: auto;
+        bottom: 0;
+        width: auto;
+        height: @museum-nav-width;
+    }
+    museum-page {
+        float: left;
+        margin: 0 @museum-nav-spacing 0 0;
+        padding: (@museum-nav-width/4.5) 0 0 0;
+    }
+    museum-gallery {
+        right: 0;
+        bottom: @museum-nav-width;
+        .info-shown & {
+            bottom: ~"calc(@{museum-info-height} + @{museum-nav-width})"
+        }
+    }
+    museum-info {  
+        right: 0;
+        bottom: @museum-nav-width;
+    }
+    .museum-btn {
+        float: left;
+        margin: 0 @museum-nav-spacing 0 0;
+    }
+    .museum-btn-close {
+        float: right;
+        margin: 0 0 0 @museum-nav-spacing;
+    }
+    
+    .museum-btn-next,
+    .museum-btn-prev {
+        float: right;
     }
 }
