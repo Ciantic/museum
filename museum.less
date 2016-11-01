@@ -84,6 +84,7 @@
 @museum-page-color: #9E9E9E;
 @museum-page-spacing: 15px;
 @museum-overlay-bg: #1E1E1E;
+@museum-overlay-zindex: 100000;
 
 @museum-nav-width: 74px;
 @museum-nav-padding: 10px;
@@ -111,11 +112,13 @@
 @museum-btn-bg-toggled: darken(@museum-btn-bg, 18%);
 @museum-btn-glyph-size: 26;
 @museum-btn-glyph-color: #fff;
-.museum-btn-close-glyph() { .museum-icon("icon-close.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
-.museum-btn-next-glyph() { .museum-icon("icon-next.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
-.museum-btn-prev-glyph() { .museum-icon("icon-prev.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
-.museum-btn-toc-glyph() { .museum-icon("icon-toc.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
-.museum-btn-info-glyph() { .museum-icon("icon-info.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+@museum-path: "";
+
+.museum-btn-close-glyph() { .museum-icon("@{museum-path}icon-close.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-next-glyph() { .museum-icon("@{museum-path}icon-next.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-prev-glyph() { .museum-icon("@{museum-path}icon-prev.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-toc-glyph() { .museum-icon("@{museum-path}icon-toc.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
+.museum-btn-info-glyph() { .museum-icon("@{museum-path}icon-info.svg", @museum-btn-glyph-color, @museum-btn-glyph-size, @museum-btn-glyph-size, #000000, 110, 110); }
 
 body.museum-overlay-shown {
     overflow: hidden;
@@ -129,6 +132,7 @@ museum-overlay {
     right: 0;
     bottom: 0;
     background: @museum-overlay-bg;
+    z-index: @museum-overlay-zindex;
     
     &.shown {
         display: block;
