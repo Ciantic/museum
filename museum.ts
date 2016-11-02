@@ -368,7 +368,10 @@ interface JQueryCallbackGeneric<T extends Function> {
             var self = this;
             setTimeout(function () {
                 self.openHash(); 
-            }); 
+            }, 5); 
+            setTimeout(function () {
+                self.openHash(); 
+            }, 500); 
         }
         
         private museums: { [id: string] : Museum } = {};
@@ -378,7 +381,6 @@ interface JQueryCallbackGeneric<T extends Function> {
             if (m = /gallery-?(.*):(\d+)/.exec(location && location.hash || "")) {
                 var id = m[1],
                     n = parseInt(m[2]);
-                    
                 if (this.museums[id]) {
                     this.museums[id].show(n);
                 }
